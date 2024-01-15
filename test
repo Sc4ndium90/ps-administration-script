@@ -1,0 +1,24 @@
+# Define drive letters and network paths
+$DriveLetter1 = "Z"
+$NetworkPath1 = "\\server\share1"
+
+$DriveLetter2 = "Y"
+$NetworkPath2 = "\\server\share2"
+
+# Check if the drives are already mapped, and remove them if they are
+if (Get-PSDrive -Name $DriveLetter1 -ErrorAction SilentlyContinue) {
+    Remove-PSDrive -Name $DriveLetter1 -Force
+}
+
+if (Get-PSDrive -Name $DriveLetter2 -ErrorAction SilentlyContinue) {
+    Remove-PSDrive -Name $DriveLetter2 -Force
+}
+
+# Map the first drive
+New-PSDrive -Name $DriveLetter1 -PSProvider FileSystem -Root $NetworkPath1 -Persist -Scope Global
+
+# Map the second drive
+New-PSDrive -Name $DriveLetter2 -PSProvider FileSystem -Root $NetworkPath2 -Persist -Scope Global
+
+# Display information about the mapped drives
+Get-PSDrive
